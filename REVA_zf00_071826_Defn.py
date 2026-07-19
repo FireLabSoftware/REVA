@@ -350,7 +350,7 @@ while ai1<len(argv):
             continue
         if '_R2.' in a1 and not('_R1.' in a1):
             R2File1=a1.strip().replace(',',' ').split()
-            for R1File1a1 in R1File1:
+            for R2File1a1 in R2File1:
                 FiL0.append(R2File1a1.split('#')[0])
                 FiN0.append(R2File1a1)
                 FiD0.append('R2')
@@ -1950,6 +1950,7 @@ def FastFindR1(c,p):
     return -1
 alphalow1='abcdefghijklmnopqrstuvwxyz\n\t\n '
 
+GeneNameD1 = {}   ## gene-name alias map for Wormbaselink1; empty unless populated elsewhere
 def Wormbaselink1(gn0):  ## link to a gene
     if '.' in gn0:
         gn1='.'.join(gn0.split('.')[:2])
@@ -2831,7 +2832,7 @@ for (f1,f2,n00) in zip(FiLR1,FiLR2,FiLN1):
             if IndexConstructionBins1>1:
                 npush('Sort_V1dedup') ## release this memory before calling CalculateFullCoverage
             CalculateFullCoverage1(MilestoneL1)
-            if IndexConstructionBins>1:
+            if IndexConstructionBins1>1:
                 npull('Sort_V1dedup')
             LogNote1('recorded '+Mnemonic2+' coverage: '+str(filelinenum//LineDensity1),LogFile1)
         if (filelinenum & 3 == 2 or (FastAFile1 and (filelinenum & 3 == 0))) and ((GoodSeqIndex1 and SeqIndexMode1<2) or (not(GoodSeqIndex1) and SeqIndexMode1==2)):    ##only pay attention to the second line of each 4 (fastq file structure)
@@ -3001,8 +3002,8 @@ for (f1,f2,n00) in zip(FiLR1,FiLR2,FiLN1):
             elif SingleReadMode1==2:
                 Es0 = -(Es2+lM0-1)
                 Es1 = -(Es3+lM0-1)
-                c1 = c2
-                c3 = c0
+                c0 = c2
+                c1 = c3
             Em0 = (abs(Es0-Es1)<=MatePairIndelLengthMax1) and c0==c1  ## sequences close enough to be considered coincident, with user defined slop value of MatePairIndelLengthMax1
             Em2 = (abs(Es2-Es3)<=MatePairIndelLengthMax1) and c2==c3
             ## User-specified conditions for skipping other read pairs
@@ -3015,7 +3016,7 @@ for (f1,f2,n00) in zip(FiLR1,FiLR2,FiLN1):
             if StartHomology1 and not(StartHomology1==mySeq(SD1[ic0],AD1[ic0],CircD1[ic0],ip0,0,len(StartHomology1))): continue
             if AvoidR1Ambiguous1 and p0==0: continue
             if AvoidR2Ambiguous1 and p2==0: continue
-            if AvoidBothAmbiguous1 and (p2==0 and p2==0): continue
+            if AvoidBothAmbiguous1 and (p0==0 and p2==0): continue
             if SeparationMax1 or SeparationMin1:
                 if c0!=c2 or p0*p2>=0: continue
                 if SeparationMax1 and VirtualFragLength1>SeparationMax1: continue
@@ -3703,7 +3704,7 @@ for (f1,f2,n00) in zip(FiLR1,FiLR2,FiLN1):
                 LogNote1('After '+str(exptlinenum1)+' read pairs, unique coverage stands at '+M1[0]+'% ',LogFile1)
             else:
                 LogNote1('After '+str(exptlinenum1)+' read pairs, unique coverage stands at '+'0.000'+'% ',LogFile1)
-        LogNote1("Finished Inerim Coverage Calculations for read "+str(exptlinenum1),LogFile1)
+        LogNote1("Finished Interim Coverage Calculations for read "+str(exptlinenum1),LogFile1)
     if FullCoverageByFile1 and f1!=FiLR1[-1] and f2!=FiLR2[-1]:
         MilestoneL1=Mnemonic2+'_'+str(filelinenum//LineDensity1)+'_'+str(exptlinenum1)
         if IndexConstructionBins1>1:
